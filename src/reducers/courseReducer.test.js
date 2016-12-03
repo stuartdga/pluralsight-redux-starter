@@ -33,4 +33,17 @@ describe('Course Reducer', () => {
     expect(untouchedCourse.title).toEqual('A');
     expect(newState.length).toEqual(3);
   });
+
+  it('should return courses when passed DELETE_COURSE_SUCCESS', () => {
+    const courses = [
+      {id: 'a', title: 'A'},
+      {id: 'b', title: 'B'},
+      {id: 'c', title: 'C'}
+    ];
+
+    const courseId = 'b';
+    const action = actions.deleteCourseSuccess(courses);
+    const newState = courseReducer(courses, action);
+    expect(newState.length).toEqual(3);
+  });
 });

@@ -19,7 +19,22 @@ describe('Course Actions', () => {
       expect(action).toEqual(expectedAction);
     });
   });
+
+  describe('deleteCourseSuccess', () => {
+    it('should create a DELETE_COURSE_SUCCESS action', () => {
+      const courses = [{id: 'asdf', title: 'Asdf'}];
+      const expectedAction = {
+        type: types.DELETE_COURSE_SUCCESS,
+        courses: courses
+      };
+
+      const action = courseActions.deleteCourseSuccess(courses);
+
+      expect(action).toEqual(expectedAction);
+    });
+  });
 });
+
 
 const middleware = [thunk];
 const mockStore = configureMockStore(middleware);
@@ -45,6 +60,28 @@ describe('Async Actions', () => {
       const actions = store.getActions();
       expect(actions[0].type).toEqual(types.BEGIN_AJAX_CALL);
       expect(actions[1].type).toEqual(types.LOAD_COURSES_SUCCESS);
+      done();
+    });
+  });
+
+  it('should create BEGIN_AJAX_CALL and DELETE_COURSE_SUCCESS when deleting a course', (done) => {
+    // Here's an example call to nock.
+    // nock('http://example.com/')
+    //   .get('/courses')
+    //   .reply(200, { body: { course: [{ id: 1, firstName: 'Cory', lastName: 'House'}] }});
+
+    const expectedActions = [
+      {type: types.BEGIN_AJAX_CALL},
+      {type: types.DELETE_COURSE_SUCCESS}
+    ];
+
+    const courseId = 'clean-code';
+
+    const store = mockStore({courses: []}, expectedActions);
+    store.dispatch(courseActions.deleteCourse(courseId)).then(() => {
+      const actions = store.getActions();
+      expect(actions[0].type).toEqual(types.BEGIN_AJAX_CALL);
+      expect(actions[1].type).toEqual(types.DELETE_COURSE_SUCCESS);
       done();
     });
   });
