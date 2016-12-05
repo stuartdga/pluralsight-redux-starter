@@ -5,6 +5,8 @@ import * as courseActions from '../../actions/courseActions';
 import CourseForm from './CourseForm';
 import {authorsFormattedForDropdown} from '../../selectors/selectors';
 import toastr from 'toastr';
+import { browserHistory } from 'react-router';
+import { validateCourseForm } from './CourseValidation';
 
 export class ManageCoursePage extends React.Component {
   constructor(props, context) {
@@ -13,7 +15,8 @@ export class ManageCoursePage extends React.Component {
     this.state = {
       course: Object.assign({}, this.props.course),
       errors: {},
-      saving: false
+      saving: false,
+      notFound: false
     };
 
     this.updateCourseState = this.updateCourseState.bind(this);
@@ -29,19 +32,19 @@ export class ManageCoursePage extends React.Component {
   updateCourseState(event) {
    const field = event.target.name;
    let course = this.state.course;
+   if (field == 'authorId') {
+     course.authorName = event.nativeEvent.target[event.nativeEvent.target.selectedIndex].text;
+   }
    course[field] = event.target.value;
    return this.setState({course:course});
   }
 
   courseFormIsValid() {
     let formIsValid = true;
-    let errors = {};
-
-    if (this.state.course.title.length < 5) {
-      errors.title = 'Title must be at least 5 characters.';
+    let errors = validateCourseForm(this.state.course);
+    if (Object.keys(errors).length > 0) {
       formIsValid = false;
     }
-
     this.setState({errors:errors});
     return formIsValid;
   }
@@ -104,6 +107,9 @@ function mapStateToProps(state, ownProps) {
 
   if (courseId && state.courses.length > 0) {
     course = getCourseById(state.courses, courseId);
+    if (course == null) {
+      browserHistory.push('/NotFoundPage');
+    }
   }
 
   return {
