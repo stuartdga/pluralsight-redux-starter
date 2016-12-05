@@ -101,7 +101,7 @@ class CourseApi {
       setTimeout(() => {
         const indexOfCourseToDelete = courses.findIndex(course => course.id == courseId);
         courses.splice(indexOfCourseToDelete, 1);
-        resolve(Object.assign([], courses))
+        resolve(Object.assign([], courses));
       }, delay);
     });
   }
