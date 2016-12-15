@@ -18,6 +18,10 @@ export function deleteCourseSuccess(courses) {
   return {type: types.DELETE_COURSE_SUCCESS, courses};
 }
 
+export function sortCoursesSuccess(courses) {
+  return {type: types.SORT_COURSES_SUCCESS, courses};
+}
+
 export function loadCourses() {
   return function(dispatch) {
     dispatch(beginAjaxCall());
@@ -51,6 +55,14 @@ export function deleteCourse(courseId) {
     }).catch(error => {
       dispatch(ajaxCallError());
       throw(error);
+    });
+  };
+}
+
+export function sortCourses(courses, propName, direction) {
+  return function(dispatch, getState) {
+    return courseApi.sortCourses(courses, propName, direction).then(courses => {
+      dispatch(sortCoursesSuccess(courses));
     });
   };
 }

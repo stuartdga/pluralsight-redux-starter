@@ -17,3 +17,4 @@ export function validateCourseForm(course) {
   }
   return errors;
 }
+

@@ -1,4 +1,5 @@
 import delay from './delay';
+import {sortList} from '../helpers/utility';
 
 // This file mocks a web API by working with the hard-coded data below.
 // It uses setTimeout to simulate the delay of an AJAX call.
@@ -65,6 +66,15 @@ class CourseApi {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         resolve(Object.assign([], courses));
+      }, delay);
+    });
+  }
+
+  static sortCourses(courses, propName, direction) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        const sortedCourses = sortList(courses, propName, direction);
+        resolve(Object.assign([], sortedCourses));
       }, delay);
     });
   }

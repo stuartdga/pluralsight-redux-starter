@@ -1,15 +1,16 @@
 import React, {PropTypes} from 'react';
 import AuthorListRow from './AuthorListRow';
+import SortableHeader from '../common/SortableHeader';
 
-const AuthorList = ({authors}) => {
+const AuthorList = ({authors, onDelete, onSort}) => {
   return (
     <table className="table">
       <thead>
       <tr>
         <th>&nbsp;</th>
-        <th>ID</th>
-        <th>First Name</th>
-        <th>Last Name</th>
+        <SortableHeader propName={'id'} propValue='ID' onSort={onSort}/>
+        <SortableHeader propName={'firstName'} propValue='First Name' onSort={onSort}/>
+        <SortableHeader propName={'lastName'} propValue='Last Name' onSort={onSort}/>
       </tr>
       </thead>
       <tbody>

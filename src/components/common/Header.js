@@ -4,9 +4,9 @@ import LoadingDots from './LoadingDots';
 
 const Header = ({loading, courseCount}) => {
   return (
-    <div style={topDivStyle}>
-      <div style={leftDivStyle}>
-        <nav>
+    <div id="mainHeaderDiv" key="mainHeaderDiv">
+      <div id="navHeaderDiv" key="navHeaderDiv">
+        <nav className="navbar navbar-default">
           <IndexLink to="/" activeClassName="active">Home</IndexLink>
           {" | "}
           <Link to="/courses" activeClassName="active">Courses</Link>
@@ -24,7 +24,7 @@ const Header = ({loading, courseCount}) => {
 
 const rightDivStyle = {
   float: 'right',
-  paddingTop: '20px',
+  paddingTop: '10px',
   paddingRight: '5px'
 };
 

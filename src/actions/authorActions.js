@@ -14,6 +14,14 @@ export function updateAuthorSuccess(author) {
   return {type: types.UPDATE_AUTHOR_SUCCESS, author};
 }
 
+export function deleteAuthorsSuccess(authors) {
+  return {type: types.DELETE_AUTHOR_SUCCESS, authors};
+}
+
+export function sortAuthorsSuccess(authors) {
+  return {type: types.SORT_AUTHORS_SUCCESS, authors};
+}
+
 export function loadAuthors() {
   return function(dispatch) {
     dispatch(beginAjaxCall());
@@ -38,3 +46,24 @@ export function saveAuthor(author) {
     });
   };
 }
+
+export function deleteAuthor(authorId) {
+  return function (dispatch, getState) {
+    dispatch(beginAjaxCall());
+    return authorApi.deleteAuthor(authorId).then( authors => {
+      dispatch(deleteAuthorsSuccess(authors));
+    }).catch(error => {
+      dispatch(ajaxCallError());
+      throw(error);
+    });
+  };
+}
+
+export function sortAuthors(authors, propName, direction) {
+  return function (dispatch, getState) {
+    return authorApi.sortAuthors(authors, propName, direction).then(authors => {
+      dispatch(sortAuthorsSuccess(authors));
+    });
+  };
+}
+

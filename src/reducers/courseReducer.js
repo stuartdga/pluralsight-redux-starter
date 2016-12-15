@@ -17,6 +17,8 @@ export default function courseReducer(state = initialState.courses, action) {
       ];
     case types.DELETE_COURSE_SUCCESS:
       return action.courses;
+    case types.SORT_COURSES_SUCCESS:
+      return action.courses;
     default:
       return state;
   }

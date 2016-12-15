@@ -4,6 +4,7 @@ import {bindActionCreators} from 'redux';
 import * as courseActions from '../../actions/courseActions';
 import CourseList from './CourseList';
 import {browserHistory} from 'react-router';
+import { sortList } from '../../helpers/utility';
 import toastr from 'toastr';
 
 class CoursesPage extends React.Component {
@@ -17,6 +18,7 @@ class CoursesPage extends React.Component {
 
     this.redirectToAddCoursePage = this.redirectToAddCoursePage.bind(this);
     this.deleteCourse = this.deleteCourse.bind(this);
+    this.sortCourses = this.sortCourses.bind(this);
   }
 
   courseRow(course, index) {
@@ -25,6 +27,10 @@ class CoursesPage extends React.Component {
 
   redirectToAddCoursePage() {
     browserHistory.push('/course');
+  }
+
+  sortCourses(event) {
+    this.props.actions.sortAuthors(this.props.courses, event.target.dataset.column, event.target.dataset.direction);
   }
 
   deleteCourse(event) {
@@ -43,7 +49,6 @@ class CoursesPage extends React.Component {
   }
 
   render() {
-    const {courses} = this.props;
     return (
       <div>
         <h1>Courses</h1>
@@ -52,8 +57,9 @@ class CoursesPage extends React.Component {
                className="btn btn-primary"
                onClick={this.redirectToAddCoursePage}/>
         <CourseList
-          courses={courses}
+          courses={this.props.courses}
           onDelete={this.deleteCourse}
+          onSort={this.sortCourses}
         />
       </div>
     );
