@@ -5,8 +5,8 @@ import * as courseActions from '../../actions/courseActions';
 import CourseForm from './CourseForm';
 import {authorsFormattedForDropdown} from '../../selectors/selectors';
 import toastr from 'toastr';
-import { browserHistory } from 'react-router';
-import { validateCourseForm } from './CourseValidation';
+import { browserHistory, withRouter } from 'react-router';
+import {validateCourseForm} from './CourseValidation';
 
 export class ManageCoursePage extends React.Component {
   constructor(props, context) {
@@ -16,11 +16,26 @@ export class ManageCoursePage extends React.Component {
       course: Object.assign({}, this.props.course),
       errors: {},
       saving: false,
-      notFound: false
+      notFound: false,
+      dirty: true
     };
 
     this.updateCourseState = this.updateCourseState.bind(this);
     this.saveCourse = this.saveCourse.bind(this);
+    this.routerWillLeave = this.routerWillLeave.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.router.setRouteLeaveHook(this.props.route, this.routerWillLeave);
+  }
+
+  routerWillLeave(nextLocation) {
+    // Return false to prevent a transition w/o prompting the user,
+    // or return a string to allow the user to decide:
+    if (this.state.dirty) {
+      return 'Leave without saving?';
+    }
+    return true;
   }
 
   componentWillReceiveProps(nextProps) {
@@ -62,6 +77,7 @@ export class ManageCoursePage extends React.Component {
       .catch(error => {
         toastr.error(error);
         this.setState({saving: false});
+        this.setState({dirty: false});
       });
   }
 
@@ -80,6 +96,7 @@ export class ManageCoursePage extends React.Component {
         course={this.state.course}
         errors={this.state.errors}
         saving={this.state.saving}
+        dirty={this.state.dirty}
       />
     );
   }
@@ -102,6 +119,7 @@ function getCourseById(courses, id) {
 }
 
 function mapStateToProps(state, ownProps) {
+  debugger;
   const courseId = ownProps.params.id;
   let course = {id: '', watchHref: '', title: '', authorId: '', length: '', category: ''};
 
@@ -124,4 +142,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ManageCoursePage);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ManageCoursePage));
