@@ -12,6 +12,9 @@ class SortableHeader extends React.Component {
     this.props.onSort(event);
     if (this.state.direction == 'asc')
       this.setState({direction: 'desc'});
+    else {
+      this.setState({direction: 'asc'});
+    }
   }
 
   render() {

@@ -30,7 +30,7 @@ class CoursesPage extends React.Component {
   }
 
   sortCourses(event) {
-    this.props.actions.sortAuthors(this.props.courses, event.target.dataset.column, event.target.dataset.direction);
+    this.props.actions.sortCourses(this.props.courses, event.target.dataset.column, event.target.dataset.direction);
   }
 
   deleteCourse(event) {

@@ -8,9 +8,9 @@ const CourseList = ({courses, onDelete, onSort}) => {
           <thead>
             <tr>
               <th>&nbsp;</th>
-              <SortableHeader propName={'title'} propValue='Title' onSort={onSort}/>
-              <SortableHeader propName={'authorName'} propValue='Author' onSort={onSort}/>
-              <SortableHeader propName={'category'} propValue='Category' onSort={onSort}/>
+              <SortableHeader propName={"title"} propValue="Title" onSort={onSort}/>
+              <SortableHeader propName={"authorName"} propValue="Author" onSort={onSort}/>
+              <SortableHeader propName={"category"} propValue="Category" onSort={onSort}/>
               <th>Length</th>
               <th>&nbsp;</th>
             </tr>
@@ -26,7 +26,8 @@ const CourseList = ({courses, onDelete, onSort}) => {
 
 CourseList.propTypes = {
   courses: PropTypes.array.isRequired,
-  onDelete: React.PropTypes.func.isRequired
+  onDelete: PropTypes.func.isRequired,
+  onSort: PropTypes.func.isRequired
 };
 
 export default CourseList;

@@ -41,7 +41,7 @@ class AuthorApi {
       setTimeout(() => {
         const sortedAuthors = sortList(authors, propName, direction);
         resolve(Object.assign([], sortedAuthors));
-      }, delay);
+      }, 0);
     });
   }
 
@@ -78,11 +78,9 @@ class AuthorApi {
   static deleteAuthor(authorId) {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-        const indexOfAuthorToDelete = authors.findIndex(author => {
-          author.authorId == authorId;
-        });
+        const indexOfAuthorToDelete = authors.findIndex(author => author.id == authorId);
         authors.splice(indexOfAuthorToDelete, 1);
-        resolve();
+        resolve(Object.assign([], authors));
       }, delay);
     });
   }

@@ -14,7 +14,7 @@ export function updateAuthorSuccess(author) {
   return {type: types.UPDATE_AUTHOR_SUCCESS, author};
 }
 
-export function deleteAuthorsSuccess(authors) {
+export function deleteAuthorSuccess(authors) {
   return {type: types.DELETE_AUTHOR_SUCCESS, authors};
 }
 
@@ -51,7 +51,7 @@ export function deleteAuthor(authorId) {
   return function (dispatch, getState) {
     dispatch(beginAjaxCall());
     return authorApi.deleteAuthor(authorId).then( authors => {
-      dispatch(deleteAuthorsSuccess(authors));
+      dispatch(deleteAuthorSuccess(authors));
     }).catch(error => {
       dispatch(ajaxCallError());
       throw(error);

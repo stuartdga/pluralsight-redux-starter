@@ -23,25 +23,61 @@ export class ManageCoursePage extends React.Component {
     this.updateCourseState = this.updateCourseState.bind(this);
     this.saveCourse = this.saveCourse.bind(this);
     this.routerWillLeave = this.routerWillLeave.bind(this);
+    this.showLeaveConfirmation = this.showLeaveConfirmation.bind(this);
+    this.allowLeave = this.allowLeave.bind(this);
   }
 
   componentDidMount() {
     this.props.router.setRouteLeaveHook(this.props.route, this.routerWillLeave);
   }
 
-  routerWillLeave(nextLocation) {
-    // Return false to prevent a transition w/o prompting the user,
-    // or return a string to allow the user to decide:
-    if (this.state.dirty) {
-      return 'Leave without saving?';
-    }
-    return true;
-  }
-
   componentWillReceiveProps(nextProps) {
     if (this.props.course.id != nextProps.course.id) {
       this.setState({course: Object.assign({}, nextProps.course)});
     }
+  }
+
+  routerWillLeave(nextLocation) {
+    // Return false to prevent a transition w/o prompting the user,
+    // or return a string to allow the user to decide:
+     if (this.state.dirty) {
+       // debugger;
+       // this.showLeaveConfirmation(nextLocation.pathname);
+       // return false;
+       return 'Leave without saving?';
+    }
+    return true;
+  }
+
+  showLeaveConfirmation(nextLocationPath) {
+    const html = "<br /><br /><button type='button' class='btn clear'>Yes</button>";
+    toastr.success(html,'Leave without saving?',
+      {
+        allowHtml: true,
+        closeButton: false,
+        debug: false,
+        newestOnTop: false,
+        progressBar: false,
+        positionClass: "toast-top-right",
+        preventDuplicates: true,
+        showDuration: "300",
+        hideDuration: "1000",
+        timeOut: 0,
+        extendedTimeOut: 0,
+        showEasing: "swing",
+        hideEasing: "linear",
+        showMethod: "fadeIn",
+        hideMethod: "fadeOut",
+        tapToDismiss: true,
+        onclick: function(toast) {
+          this.allowLeave(nextLocationPath);
+        }
+      });
+  }
+
+  allowLeave(nextLocationPath) {
+    this.setState.dirty = false;
+    this.context.router.push(nextLocationPath);
   }
 
   updateCourseState(event) {
@@ -106,7 +142,9 @@ export class ManageCoursePage extends React.Component {
 ManageCoursePage.propTypes = {
   course: PropTypes.object.isRequired,
   authors: PropTypes.array.isRequired,
-  actions: PropTypes.object.isRequired
+  actions: PropTypes.object.isRequired,
+  router: PropTypes.object,
+  route: PropTypes.object
 };
 
 ManageCoursePage.contextTypes = {

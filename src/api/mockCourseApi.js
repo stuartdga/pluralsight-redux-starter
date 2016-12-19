@@ -75,7 +75,7 @@ class CourseApi {
       setTimeout(() => {
         const sortedCourses = sortList(courses, propName, direction);
         resolve(Object.assign([], sortedCourses));
-      }, delay);
+      }, 0);
     });
   }
 

@@ -8,14 +8,14 @@ const AuthorList = ({authors, onDelete, onSort}) => {
       <thead>
       <tr>
         <th>&nbsp;</th>
-        <SortableHeader propName={'id'} propValue='ID' onSort={onSort}/>
-        <SortableHeader propName={'firstName'} propValue='First Name' onSort={onSort}/>
-        <SortableHeader propName={'lastName'} propValue='Last Name' onSort={onSort}/>
+        <SortableHeader propName={"id"} propValue="ID" onSort={onSort}/>
+        <SortableHeader propName={"firstName"} propValue="First Name" onSort={onSort}/>
+        <SortableHeader propName={"lastName"} propValue="Last Name" onSort={onSort}/>
       </tr>
       </thead>
       <tbody>
       {authors.map(author =>
-        <AuthorListRow key={author.id} author={author} />
+        <AuthorListRow key={author.id} author={author} onDelete={onDelete} />
       )}
       </tbody>
     </table>
@@ -23,7 +23,9 @@ const AuthorList = ({authors, onDelete, onSort}) => {
 };
 
 AuthorList.propTypes = {
-  authors: PropTypes.array.isRequired
+  authors: PropTypes.array.isRequired,
+  onDelete: PropTypes.func.isRequired,
+  onSort: PropTypes.func.isRequired
 };
 
 export default AuthorList;

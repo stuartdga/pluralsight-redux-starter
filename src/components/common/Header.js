@@ -35,7 +35,7 @@ const leftDivStyle = {
 
 const topDivStyle = {
   paddingBottom: '20px'
-}
+};
 
 Header.propTypes = {
   loading: PropTypes.bool.isRequired,
