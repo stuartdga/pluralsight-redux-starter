@@ -49,6 +49,10 @@ class CoursesPage extends React.Component {
   }
 
   render() {
+    const hideEmpty = {
+      'display': this.props.courses.length > 0 ? 'block' : 'none'
+    };
+
     return (
       <div>
         <h1>Courses</h1>
@@ -56,11 +60,13 @@ class CoursesPage extends React.Component {
                value="Add Course"
                className="btn btn-primary"
                onClick={this.redirectToAddCoursePage}/>
-        <CourseList
-          courses={this.props.courses}
-          onDelete={this.deleteCourse}
-          onSort={this.sortCourses}
-        />
+        <div style={hideEmpty}>
+          <CourseList
+            courses={this.props.courses}
+            onDelete={this.deleteCourse}
+            onSort={this.sortCourses}
+          />
+        </div>
       </div>
     );
   }

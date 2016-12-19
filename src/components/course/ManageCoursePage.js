@@ -83,6 +83,7 @@ export class ManageCoursePage extends React.Component {
 
   redirect() {
     this.setState({saving: false});
+    this.setState({dirty: false});
     toastr.success('Course saved');
     this.context.router.push('/courses');
   }
@@ -119,7 +120,6 @@ function getCourseById(courses, id) {
 }
 
 function mapStateToProps(state, ownProps) {
-  debugger;
   const courseId = ownProps.params.id;
   let course = {id: '', watchHref: '', title: '', authorId: '', length: '', category: ''};
 
