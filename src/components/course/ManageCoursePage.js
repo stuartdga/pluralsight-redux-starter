@@ -24,7 +24,6 @@ export class ManageCoursePage extends React.Component {
     this.saveCourse = this.saveCourse.bind(this);
     this.routerWillLeave = this.routerWillLeave.bind(this);
     this.showLeaveConfirmation = this.showLeaveConfirmation.bind(this);
-    this.allowLeave = this.allowLeave.bind(this);
   }
 
   componentDidMount() {
@@ -42,19 +41,18 @@ export class ManageCoursePage extends React.Component {
     // or return a string to allow the user to decide:
      if (this.state.dirty) {
        // debugger;
-       // this.showLeaveConfirmation(nextLocation.pathname);
-       // return false;
-       return 'Leave without saving?';
+       this.showLeaveConfirmation(nextLocation.pathname);
+       return false;
     }
     return true;
   }
 
   showLeaveConfirmation(nextLocationPath) {
     const html = "<br /><br /><button type='button' class='btn clear'>Yes</button>";
-    toastr.success(html,'Leave without saving?',
+    toastr.warning(html,'Leave without saving?',
       {
         allowHtml: true,
-        closeButton: false,
+        closeButton: true,
         debug: false,
         newestOnTop: false,
         progressBar: false,
@@ -69,15 +67,10 @@ export class ManageCoursePage extends React.Component {
         showMethod: "fadeIn",
         hideMethod: "fadeOut",
         tapToDismiss: true,
-        onclick: function(toast) {
-          this.allowLeave(nextLocationPath);
+        onclick: function() {
+          window.location = window.location.origin + nextLocationPath;
         }
       });
-  }
-
-  allowLeave(nextLocationPath) {
-    this.setState.dirty = false;
-    this.context.router.push(nextLocationPath);
   }
 
   updateCourseState(event) {
