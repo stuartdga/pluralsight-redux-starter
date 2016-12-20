@@ -7,6 +7,7 @@ import {authorsFormattedForDropdown} from '../../selectors/selectors';
 import toastr from 'toastr';
 import { browserHistory, withRouter } from 'react-router';
 import {validateCourseForm} from './CourseValidation';
+import {showLeaveConfirmation} from '../../helpers/utility';
 
 export class ManageCoursePage extends React.Component {
   constructor(props, context) {
@@ -23,7 +24,6 @@ export class ManageCoursePage extends React.Component {
     this.updateCourseState = this.updateCourseState.bind(this);
     this.saveCourse = this.saveCourse.bind(this);
     this.routerWillLeave = this.routerWillLeave.bind(this);
-    this.showLeaveConfirmation = this.showLeaveConfirmation.bind(this);
   }
 
   componentDidMount() {
@@ -41,36 +41,10 @@ export class ManageCoursePage extends React.Component {
     // or return a string to allow the user to decide:
      if (this.state.dirty) {
        // debugger;
-       this.showLeaveConfirmation(nextLocation.pathname);
+       showLeaveConfirmation(nextLocation.pathname);
        return false;
     }
     return true;
-  }
-
-  showLeaveConfirmation(nextLocationPath) {
-    const html = "<br /><br /><button type='button' class='btn clear'>Yes</button>";
-    toastr.warning(html,'Leave without saving?',
-      {
-        allowHtml: true,
-        closeButton: true,
-        debug: false,
-        newestOnTop: false,
-        progressBar: false,
-        positionClass: "toast-top-right",
-        preventDuplicates: true,
-        showDuration: "300",
-        hideDuration: "1000",
-        timeOut: 0,
-        extendedTimeOut: 0,
-        showEasing: "swing",
-        hideEasing: "linear",
-        showMethod: "fadeIn",
-        hideMethod: "fadeOut",
-        tapToDismiss: true,
-        onclick: function() {
-          window.location = window.location.origin + nextLocationPath;
-        }
-      });
   }
 
   updateCourseState(event) {

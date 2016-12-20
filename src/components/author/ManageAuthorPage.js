@@ -5,6 +5,8 @@ import * as authorActions from '../../actions/authorActions';
 import AuthorForm from './AuthorForm';
 import {authorsFormattedForDropdown} from '../../selectors/selectors';
 import toastr from 'toastr';
+import { browserHistory, withRouter } from 'react-router';
+import {showLeaveConfirmation} from '../../helpers/utility';
 
 export class ManageAuthorPage extends React.Component {
   constructor(props, context) {
@@ -13,17 +15,34 @@ export class ManageAuthorPage extends React.Component {
     this.state = {
       author: Object.assign({}, this.props.author),
       errors: {},
-      saving: false
+      saving: false,
+      dirty: true
     };
 
     this.updateAuthorState = this.updateAuthorState.bind(this);
     this.saveAuthor = this.saveAuthor.bind(this);
+    this.routerWillLeave = this.routerWillLeave.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.router.setRouteLeaveHook(this.props.route, this.routerWillLeave);
   }
 
   componentWillReceiveProps(nextProps) {
     if (this.props.author.id != nextProps.author.id) {
       this.setState({author: Object.assign({}, nextProps.author)});
     }
+  }
+
+  routerWillLeave(nextLocation) {
+    // Return false to prevent a transition w/o prompting the user,
+    // or return a string to allow the user to decide:
+    if (this.state.dirty) {
+      // debugger;
+      showLeaveConfirmation(nextLocation.pathname);
+      return false;
+    }
+    return true;
   }
 
   updateAuthorState(event) {
@@ -64,11 +83,13 @@ export class ManageAuthorPage extends React.Component {
       .catch(error => {
         toastr.error(error);
         this.setState({saving: false});
+        this.setState({dirty: false});
       });
   }
 
   redirect() {
     this.setState({saving: false});
+    this.setState({dirty: false});
     toastr.success('Author saved');
     this.context.router.push('/authors');
   }
@@ -90,7 +111,9 @@ export class ManageAuthorPage extends React.Component {
 ManageAuthorPage.propTypes = {
   author: PropTypes.object.isRequired,
   authors: PropTypes.array.isRequired,
-  actions: PropTypes.object.isRequired
+  actions: PropTypes.object.isRequired,
+  router: PropTypes.object,
+  route: PropTypes.object
 };
 
 ManageAuthorPage.contextTypes = {
@@ -123,4 +146,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ManageAuthorPage);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ManageAuthorPage));
